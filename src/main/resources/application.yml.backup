@@ -1,0 +1,59 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: sc-gateway
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+                allow-credentials: true
+                allowed-origins: '*'
+                allowed-headers: '*'
+                allowed-methods: 
+                - OPTIONS
+                - GET
+                - POST
+                - PUT
+      routes:
+      - id: remote01
+        uri: lb://remote01
+        predicates:
+        - Path=/remote01/**
+        filters:
+        - JwtAuth=token,false
+        - StripPrefix=1
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true
+logging:
+  file:
+    max-history: 5
+    max-size: 100MB
+    name: /var/log/${spring.application.name}.log
+  level:
+    gateway:
+      filters:
+        JwtAuthFilter: info
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: env,mappings,gateway
