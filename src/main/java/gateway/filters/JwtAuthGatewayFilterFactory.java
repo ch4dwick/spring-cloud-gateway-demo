@@ -3,8 +3,7 @@ package gateway.filters;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.validation.constraints.NotEmpty;
-
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
